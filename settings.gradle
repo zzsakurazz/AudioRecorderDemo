@@ -1,0 +1,2 @@
+include ':app', ':recorder_lib'
+rootProject.name='Driver_Audio_Recorder'
