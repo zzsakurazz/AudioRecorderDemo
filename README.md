@@ -10,6 +10,13 @@
 api 'com.ole.travel:recorder:1.0.0'
 ```
 
+- ##### 添加权限
+
+```xml
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+
 - ##### 初始化
 
 ```java
