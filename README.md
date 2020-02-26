@@ -65,12 +65,17 @@ recordManager.setRecordStateListener(new RecordStateListener() {
 - ##### 录音结果监听
 
 ```java
-recordManager.setRecordResultListener(new RecordResultListener() {
-    @Override
-    public void onResult(File result) {
-       
-    }
-});
+   recordManager.setRecordResultListener(new RecordResultListener() {
+            @Override
+            public void onResultToFile(File resultFile) {
+               //返回录音文件
+            }
+
+            @Override
+            public void onResultToBase64(String resultBase64) {
+                 //返回Base64字符串
+            }
+        });
 ```
 
 - ##### 录音操作

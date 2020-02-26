@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -106,8 +107,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
-            public void onResult(File result) {
-                Toast.makeText(MainActivity.this, "录音文件： " + result.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+            public void onResultToFile(File resultFile) {
+                Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onResultToBase64(String resultBase64) {
+                Log.e("zz", "resultBase64:" + resultBase64);
             }
         });
         recordManager.setRecordSoundSizeListener(new RecordSoundSizeListener() {

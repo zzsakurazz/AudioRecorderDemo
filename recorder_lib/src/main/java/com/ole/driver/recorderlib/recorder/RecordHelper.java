@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Looper;
 
 
+import com.ole.driver.recorderlib.utils.Bast64Utils;
 import com.ole.driver.recorderlib.utils.fftlib.FftFactory;
+
 import ola.com.travel.log.logger.Logger;
 
 import com.ole.driver.recorderlib.recorder.listener.RecordDataListener;
@@ -170,7 +172,6 @@ public class RecordHelper {
 
     private void notifyFinish() {
         Logger.d("录音结束 file: %s", resultFile.getAbsolutePath());
-
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -178,7 +179,8 @@ public class RecordHelper {
                     recordStateListener.onStateChange(RecordState.FINISH);
                 }
                 if (recordResultListener != null) {
-                    recordResultListener.onResult(resultFile);
+                    recordResultListener.onResultToFile(resultFile);
+                    recordResultListener.onResultToBase64(Bast64Utils.fileToBase64(resultFile));
                 }
             }
         });
