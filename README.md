@@ -67,13 +67,8 @@ recordManager.setRecordStateListener(new RecordStateListener() {
 ```java
    recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
-            public void onResultToFile(File resultFile) {
-               //返回录音文件
-            }
+            public void onResult(File resultFile, String resultBase64) {
 
-            @Override
-            public void onResultToBase64(String resultBase64) {
-                 //返回Base64字符串
             }
         });
 ```
