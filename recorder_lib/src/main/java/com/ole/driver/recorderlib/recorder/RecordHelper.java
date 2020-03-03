@@ -179,8 +179,7 @@ public class RecordHelper {
                     recordStateListener.onStateChange(RecordState.FINISH);
                 }
                 if (recordResultListener != null) {
-                    recordResultListener.onResultToFile(resultFile);
-                    recordResultListener.onResultToBase64(Bast64Utils.fileToBase64(resultFile));
+                    recordResultListener.onResult(resultFile,Bast64Utils.fileToBase64(resultFile));
                 }
             }
         });

@@ -56,7 +56,6 @@ public class Mp3EncodeThread extends Thread {
 
         while (start) {
             ChangeBuffer next = next();
-            Logger.v(  "处理数据：%s", next == null ? "null" : next.getReadSize());
             lameData(next);
         }
     }

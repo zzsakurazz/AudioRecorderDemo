@@ -10,14 +10,9 @@ public interface RecordResultListener {
     /**
      * 录音文件
      *
-     * @param resultFile 录音文件
+     * @param resultFile   录音文件
+     * @param resultBase64 录音Base64
      */
-    void onResultToFile(File resultFile);
+    void onResult(File resultFile, String resultBase64);
 
-    /**
-     * 录音文件
-     *
-     * @param resultBase64 录音文件
-     */
-    void onResultToBase64(String resultBase64);
 }

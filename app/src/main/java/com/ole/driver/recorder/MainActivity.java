@@ -106,15 +106,13 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
-            @Override
-            public void onResultToFile(File resultFile) {
-                Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-            }
 
             @Override
-            public void onResultToBase64(String resultBase64) {
+            public void onResult(File resultFile, String resultBase64) {
+                Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                 Log.e("zz", "resultBase64:" + resultBase64);
             }
+
         });
         recordManager.setRecordSoundSizeListener(new RecordSoundSizeListener() {
             @Override
