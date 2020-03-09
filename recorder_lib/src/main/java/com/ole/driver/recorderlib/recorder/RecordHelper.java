@@ -179,7 +179,7 @@ public class RecordHelper {
                     recordStateListener.onStateChange(RecordState.FINISH);
                 }
                 if (recordResultListener != null) {
-                    recordResultListener.onResult(resultFile,Bast64Utils.fileToBase64(resultFile));
+                    recordResultListener.onResult(resultFile, Bast64Utils.fileToBase64(resultFile));
                 }
             }
         });
@@ -255,8 +255,7 @@ public class RecordHelper {
             bufferSize = AudioRecord.getMinBufferSize(currentConfig.getSampleRate(),
                     currentConfig.getChannelConfig(), currentConfig.getEncodingConfig()) * RECORD_AUDIO_BUFFER_TIMES;
             Logger.d("record buffer size = %s", bufferSize);
-            //--todo--音源控制
-            audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, currentConfig.getSampleRate(),
+            audioRecord = new AudioRecord(currentConfig.getSourceConfig(), currentConfig.getSampleRate(),
                     currentConfig.getChannelConfig(), currentConfig.getEncodingConfig(), bufferSize);
             if (currentConfig.getFormat() == RecordConfig.RecordFormat.MP3) {
                 if (mp3EncodeThread == null) {

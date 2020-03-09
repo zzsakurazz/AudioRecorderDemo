@@ -150,6 +150,11 @@ public class RecordManager {
      */
     public void changeRecordDir(String recordDir) {
         RecordService.changeRecordDir(recordDir);
+    }   /**
+     * 修改录音文件存放路径
+     */
+    public void changeSource(int source) {
+        RecordService.changeSource(source);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.ole.driver.recorder;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.media.AudioFormat;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -87,6 +88,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         initRecord();
     }
 
+    @Override
+    protected void onDestroy() {
+        /**
+         * 添加退出保存
+         */
+        RecordManager.getInstance().stop();
+        super.onDestroy();
+    }
+
     private void initRecord() {
         String recordDir = String.format(Locale.getDefault(), "%s/Record/com.zz.main/",
                 this.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
@@ -94,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         recordManager.changeRecordDir(recordDir);
+        //MIC:麦克风  DEFAULT:默认音源
+        recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.setRecordStateListener(new RecordStateListener() {
             @Override
             public void onStateChange(RecordHelper.RecordState state) {
@@ -106,11 +118,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
-
             @Override
             public void onResult(File resultFile, String resultBase64) {
                 Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                Log.e("zz", "resultBase64:" + resultBase64);
             }
 
         });

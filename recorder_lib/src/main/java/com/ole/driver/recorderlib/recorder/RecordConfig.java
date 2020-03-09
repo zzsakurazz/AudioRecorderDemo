@@ -1,6 +1,7 @@
 package com.ole.driver.recorderlib.recorder;
 
 import android.media.AudioFormat;
+import android.media.MediaRecorder;
 import android.os.Environment;
 
 import java.io.Serializable;
@@ -25,12 +26,17 @@ public class RecordConfig implements Serializable {
     private int encodingConfig = AudioFormat.ENCODING_PCM_16BIT;
 
     /**
+     * 音源
+     */
+    private int sourceConfig = MediaRecorder.AudioSource.DEFAULT;
+
+    /**
      * 采样率
      */
     private int sampleRate = 16000;
 
-    /*
-        * 录音文件存放路径，默认sdcard/Record
+    /**
+     * 录音文件存放路径，默认sdcard/Record
      */
     private String recordDir = String.format(Locale.getDefault(),
             "%s/Record/",
@@ -69,13 +75,21 @@ public class RecordConfig implements Serializable {
         this.recordDir = recordDir;
     }
 
+    public int getSourceConfig() {
+        return sourceConfig;
+    }
+
+    public void setSource(int source) {
+        this.sourceConfig = source;
+    }
+
     /**
      * 获取当前录音的采样位宽 单位bit
      *
      * @return 采样位宽 0: error
      */
     public int getEncoding() {
-        if(format == RecordFormat.MP3){//mp3后期转换
+        if (format == RecordFormat.MP3) {//mp3后期转换
             return 16;
         }
 
@@ -129,6 +143,7 @@ public class RecordConfig implements Serializable {
         return this;
     }
 
+
     public int getChannelConfig() {
         return channelConfig;
     }
@@ -139,7 +154,7 @@ public class RecordConfig implements Serializable {
     }
 
     public int getEncodingConfig() {
-        if(format == RecordFormat.MP3){//mp3后期转换
+        if (format == RecordFormat.MP3) {//mp3后期转换
             return AudioFormat.ENCODING_PCM_16BIT;
         }
         return encodingConfig;

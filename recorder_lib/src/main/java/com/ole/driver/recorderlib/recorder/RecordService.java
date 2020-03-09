@@ -142,6 +142,11 @@ public class RecordService extends Service {
         currentConfig.setRecordDir(recordDir);
     }
 
+
+    public static void changeSource(int source) {
+        currentConfig.setSource(source);
+    }
+
     /**
      * 获取当前的录音状态
      */
@@ -170,22 +175,22 @@ public class RecordService extends Service {
     }
 
     private void doStartRecording(String path) {
-        Logger.v(  "doStartRecording path: %s", path);
+        Logger.v("doStartRecording path: %s", path);
         RecordHelper.getInstance().start(path, currentConfig);
     }
 
     private void doResumeRecording() {
-        Logger.v( "doResumeRecording");
+        Logger.v("doResumeRecording");
         RecordHelper.getInstance().resume();
     }
 
     private void doPauseRecording() {
-        Logger.v(  "doResumeRecording");
+        Logger.v("doResumeRecording");
         RecordHelper.getInstance().pause();
     }
 
     private void doStopRecording() {
-        Logger.v(  "doStopRecording");
+        Logger.v("doStopRecording");
         RecordHelper.getInstance().stop();
         stopSelf();
     }
@@ -207,7 +212,7 @@ public class RecordService extends Service {
         String fileDir =
                 currentConfig.getRecordDir();
         if (!FileUtils.createOrExistsDir(fileDir)) {
-            Logger.w(  "文件夹创建失败：%s", fileDir);
+            Logger.w("文件夹创建失败：%s", fileDir);
             return null;
         }
         String fileName = String.format(Locale.getDefault(), "record_%s", FileUtils.getNowString(new SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE)));
