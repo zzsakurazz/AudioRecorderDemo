@@ -44,6 +44,10 @@ recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(4
 recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
 //设置保存路径
 recordManager.changeRecordDir(recordDir);
+//设置文件名 注意每次录音时请重新设置，避免文件覆盖
+recordManager.changeFileName(fileName);
+//设置音源 默认为DEFAULT
+recordManager.changeSource(MediaRecorder.AudioSource.MIC);
 ```
 
 - ##### 录音状态监听
@@ -88,4 +92,4 @@ RecordManager.getInstance().stop();
 
 ### 备注
 
-其他操作详见demo
+其他操作详见[demo](https://gitlab.olafuwu.com/ole-terminal/ole-arc/android/common_recorder)
