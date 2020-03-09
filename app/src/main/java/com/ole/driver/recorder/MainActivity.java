@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         recordManager.changeRecordDir(recordDir);
-        recordManager.changeFileName(String.format(Locale.getDefault(), "demo_%s", FileUtils.getNowString(new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE))));
         //MIC:麦克风  DEFAULT:默认音源
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.setRecordStateListener(new RecordStateListener() {
@@ -141,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             case R.id.main_but_record:
                 if (EasyPermissions.hasPermissions(this, PERMS)) {
                     // 已经申请过权限，做想做的事
+                    recordManager.changeFileName(String.format(Locale.getDefault(), "demo_%s", FileUtils.getNowString(new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE))));
                     RecordManager.getInstance().start();
                     handler.sendEmptyMessage(0);
                 } else {
