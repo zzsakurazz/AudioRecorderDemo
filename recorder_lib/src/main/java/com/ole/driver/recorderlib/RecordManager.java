@@ -68,10 +68,10 @@ public class RecordManager {
 
     public void start() {
         if (context == null) {
-            Logger.e(  "未进行初始化");
+            Logger.e("未进行初始化");
             return;
         }
-        Logger.i(  "start...");
+        Logger.i("start...");
         RecordService.startRecording(context);
     }
 
@@ -150,7 +150,14 @@ public class RecordManager {
      */
     public void changeRecordDir(String recordDir) {
         RecordService.changeRecordDir(recordDir);
-    }   /**
+    }
+    /**
+     * 修改录音文件存放路径
+     */
+    public void changeFileName(String fileName) {
+        RecordService.changeFileName(fileName);
+    }
+    /**
      * 修改录音文件存放路径
      */
     public void changeSource(int source) {

@@ -4,7 +4,10 @@ import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.os.Environment;
 
+import com.ole.driver.recorderlib.utils.FileUtils;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
@@ -34,6 +37,11 @@ public class RecordConfig implements Serializable {
      * 采样率
      */
     private int sampleRate = 16000;
+
+    /**
+     * 文件名
+     */
+    private String fileName = String.format(Locale.getDefault(), "record_%s", FileUtils.getNowString(new SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE)));
 
     /**
      * 录音文件存放路径，默认sdcard/Record
@@ -73,6 +81,14 @@ public class RecordConfig implements Serializable {
 
     public void setRecordDir(String recordDir) {
         this.recordDir = recordDir;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public int getSourceConfig() {

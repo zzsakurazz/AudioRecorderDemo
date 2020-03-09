@@ -23,8 +23,10 @@ import com.ole.driver.recorderlib.recorder.RecordHelper;
 import com.ole.driver.recorderlib.recorder.listener.RecordResultListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordSoundSizeListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordStateListener;
+import com.ole.driver.recorderlib.utils.FileUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         recordManager.changeRecordDir(recordDir);
+        recordManager.changeFileName(String.format(Locale.getDefault(), "demo_%s", FileUtils.getNowString(new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE))));
         //MIC:麦克风  DEFAULT:默认音源
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.setRecordStateListener(new RecordStateListener() {

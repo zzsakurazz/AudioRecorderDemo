@@ -142,6 +142,9 @@ public class RecordService extends Service {
         currentConfig.setRecordDir(recordDir);
     }
 
+    public static void changeFileName(String fileName) {
+        currentConfig.setFileName(fileName);
+    }
 
     public static void changeSource(int source) {
         currentConfig.setSource(source);
@@ -212,10 +215,14 @@ public class RecordService extends Service {
         String fileDir =
                 currentConfig.getRecordDir();
         if (!FileUtils.createOrExistsDir(fileDir)) {
-            Logger.w("文件夹创建失败：%s", fileDir);
+            Logger.e("文件夹创建失败：%s", fileDir);
             return null;
         }
-        String fileName = String.format(Locale.getDefault(), "record_%s", FileUtils.getNowString(new SimpleDateFormat("yyyyMMdd_HH_mm_ss", Locale.SIMPLIFIED_CHINESE)));
+        String fileName = currentConfig.getFileName();
+        if (fileName.isEmpty()) {
+            Logger.e("文件创建失败：文件名不合法");
+            return null;
+        }
         return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName, currentConfig.getFormat().getExtension());
     }
 
