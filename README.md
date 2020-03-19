@@ -36,18 +36,18 @@ RecordManager.getInstance().init(this,true);
 - ##### 配置录音参数
 
 ```java
-//设置保存格式
+//设置保存格式 默认为mp3
 recordManager.changeFormat(RecordConfig.RecordFormat.MP3);
-//设置帧率
+//设置帧率    默认为44100
 recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
-//设置编码格式
+//设置编码格式 默认为16BIT
 recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
+//设置音源    默认为MIC
+recordManager.changeSource(MediaRecorder.AudioSource.MIC);
 //设置保存路径
 recordManager.changeRecordDir(recordDir);
 //设置文件名 注意每次录音时请重新设置，避免文件覆盖
 recordManager.changeFileName(fileName);
-//设置音源 默认为DEFAULT
-recordManager.changeSource(MediaRecorder.AudioSource.MIC);
 ```
 
 - ##### 录音状态监听
@@ -90,6 +90,12 @@ RecordManager.getInstance().resume();
 RecordManager.getInstance().stop();
 ```
 
+- ##### 录音状态
+
+```java
+//获取当前录音状态
+recordManager.getState();
+```
 ### 备注
 
 其他操作详见[demo](https://gitlab.olafuwu.com/ole-terminal/ole-arc/android/common_recorder)
