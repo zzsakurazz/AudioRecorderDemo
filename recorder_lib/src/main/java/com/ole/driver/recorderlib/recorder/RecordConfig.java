@@ -15,9 +15,10 @@ import java.util.Locale;
  */
 public class RecordConfig implements Serializable {
     /**
-     * 录音格式 默认WAV格式
+     * 录音格式 默认MP3格式
      */
-    private RecordFormat format = RecordFormat.WAV;
+    private RecordFormat format = RecordFormat.MP3;
+
     /**
      * 通道数:默认单通道
      */
@@ -31,12 +32,12 @@ public class RecordConfig implements Serializable {
     /**
      * 音源
      */
-    private int sourceConfig = MediaRecorder.AudioSource.DEFAULT;
+    private int sourceConfig = MediaRecorder.AudioSource.MIC;
 
     /**
      * 采样率
      */
-    private int sampleRate = 16000;
+    private int sampleRate = 44100;
 
     /**
      * 文件名
