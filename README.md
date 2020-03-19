@@ -7,7 +7,7 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.0.0'
+api 'com.ole.travel:recorder:1.0.4'
 ```
 
 - ##### 添加权限
