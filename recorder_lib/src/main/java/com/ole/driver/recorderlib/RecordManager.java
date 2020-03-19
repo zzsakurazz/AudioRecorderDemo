@@ -47,19 +47,23 @@ public class RecordManager {
      * @param showLog     是否开启日志
      */
     public void init(Application application, boolean showLog) {
-        this.context = application;
-        OLELogManager.init(application, new OLELoggerConfig.Builder()
-                //是否debug模式 默认true
-                .isDebug(showLog)
-                //是否展示线程信息
-                .isThreadInfo(false)
-                //方法深度 打印多少行
-                .methodCount(1)
-                //方法偏移量
-                .methodOffset(1)
-                //tag标识
-                .tag("Audio_Recorder")
-                .build());
+        if(application!= this.context){
+            this.context = application;
+            OLELogManager.init(application, new OLELoggerConfig.Builder()
+                    //是否debug模式 默认true
+                    .isDebug(showLog)
+                    //是否展示线程信息
+                    .isThreadInfo(false)
+                    //方法深度 打印多少行
+                    .methodCount(1)
+                    //方法偏移量
+                    .methodOffset(1)
+                    //tag标识
+                    .tag("Audio_Recorder")
+                    .build());
+        }else{
+            Logger.e("多次初始化");
+        }
     }
 
     public void init(Application application) {
