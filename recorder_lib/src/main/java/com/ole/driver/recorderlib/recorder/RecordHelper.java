@@ -253,22 +253,26 @@ public class RecordHelper {
         private int bufferSize;
 
         AudioRecordThread() {
+            bufferSize = AudioRecord.getMinBufferSize(currentConfig.getSampleRate(),
+                    currentConfig.getChannelConfig(), currentConfig.getEncodingConfig()) * RECORD_AUDIO_BUFFER_TIMES;
+            Logger.d("record buffer size = %s", bufferSize);
             try {
-                bufferSize = AudioRecord.getMinBufferSize(currentConfig.getSampleRate(),
-                        currentConfig.getChannelConfig(), currentConfig.getEncodingConfig()) * RECORD_AUDIO_BUFFER_TIMES;
-                Logger.d("record buffer size = %s", bufferSize);
                 audioRecord = new AudioRecord(currentConfig.getSourceConfig(), currentConfig.getSampleRate(),
                         currentConfig.getChannelConfig(), currentConfig.getEncodingConfig(), bufferSize);
-                if (currentConfig.getFormat() == RecordConfig.RecordFormat.MP3) {
-                    if (mp3EncodeThread == null) {
-                        initMp3EncoderThread(bufferSize);
-                    } else {
-                        Logger.e("mp3EncodeThread != null, 请检查代码");
-                    }
-                }
             } catch (IllegalArgumentException e) {
+                //降级走默认值
                 Logger.e(e, e.getMessage());
+                audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, 44100,
+                        AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT, bufferSize);
             }
+            if (currentConfig.getFormat() == RecordConfig.RecordFormat.MP3) {
+                if (mp3EncodeThread == null) {
+                    initMp3EncoderThread(bufferSize);
+                } else {
+                    Logger.e("mp3EncodeThread != null, 请检查代码");
+                }
+            }
+
         }
 
         @Override
