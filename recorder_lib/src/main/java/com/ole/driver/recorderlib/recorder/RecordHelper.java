@@ -1,5 +1,6 @@
 package com.ole.driver.recorderlib.recorder;
 
+import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -252,17 +253,21 @@ public class RecordHelper {
         private int bufferSize;
 
         AudioRecordThread() {
-            bufferSize = AudioRecord.getMinBufferSize(currentConfig.getSampleRate(),
-                    currentConfig.getChannelConfig(), currentConfig.getEncodingConfig()) * RECORD_AUDIO_BUFFER_TIMES;
-            Logger.d("record buffer size = %s", bufferSize);
-            audioRecord = new AudioRecord(currentConfig.getSourceConfig(), currentConfig.getSampleRate(),
-                    currentConfig.getChannelConfig(), currentConfig.getEncodingConfig(), bufferSize);
-            if (currentConfig.getFormat() == RecordConfig.RecordFormat.MP3) {
-                if (mp3EncodeThread == null) {
-                    initMp3EncoderThread(bufferSize);
-                } else {
-                    Logger.e("mp3EncodeThread != null, 请检查代码");
+            try {
+                bufferSize = AudioRecord.getMinBufferSize(currentConfig.getSampleRate(),
+                        currentConfig.getChannelConfig(), currentConfig.getEncodingConfig()) * RECORD_AUDIO_BUFFER_TIMES;
+                Logger.d("record buffer size = %s", bufferSize);
+                audioRecord = new AudioRecord(currentConfig.getSourceConfig(), currentConfig.getSampleRate(),
+                        currentConfig.getChannelConfig(), currentConfig.getEncodingConfig(), bufferSize);
+                if (currentConfig.getFormat() == RecordConfig.RecordFormat.MP3) {
+                    if (mp3EncodeThread == null) {
+                        initMp3EncoderThread(bufferSize);
+                    } else {
+                        Logger.e("mp3EncodeThread != null, 请检查代码");
+                    }
                 }
+            } catch (IllegalArgumentException e) {
+                Logger.e(e, e.getMessage());
             }
         }
 
