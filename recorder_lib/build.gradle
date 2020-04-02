@@ -35,6 +35,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     //日志服务SDK
-    implementation 'com.ole.travel:log:3.0.3'
+    implementation 'com.ole.travel:log:3.2.0'
 
 }

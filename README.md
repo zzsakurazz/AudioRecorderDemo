@@ -7,7 +7,7 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.0.6'
+api 'com.ole.travel:recorder:1.0.7'
 ```
 
 - ##### 添加权限
@@ -22,9 +22,8 @@ api 'com.ole.travel:recorder:1.0.6'
 ```java
 /**
  * 参数1： Application 实例
- * 参数2： 是否打印日志
  */
-RecordManager.getInstance().init(this,true);
+RecordManager.getInstance().init(this);
 ```
 
 - ##### 注册service

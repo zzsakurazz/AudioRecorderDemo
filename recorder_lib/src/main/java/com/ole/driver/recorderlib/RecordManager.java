@@ -44,14 +44,11 @@ public class RecordManager {
      * 初始化
      *
      * @param application Application
-     * @param showLog     是否开启日志
      */
-    public void init(Application application, boolean showLog) {
+    public void init(Application application) {
         if(application!= this.context){
             this.context = application;
             OLELogManager.init(application, new OLELoggerConfig.Builder()
-                    //是否debug模式 默认true
-                    .isDebug(showLog)
                     //是否展示线程信息
                     .isThreadInfo(false)
                     //方法深度 打印多少行
@@ -64,10 +61,6 @@ public class RecordManager {
         }else{
             Logger.e("多次初始化");
         }
-    }
-
-    public void init(Application application) {
-        init(application, false);
     }
 
     public void start() {
