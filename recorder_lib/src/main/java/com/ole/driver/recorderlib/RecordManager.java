@@ -49,7 +49,7 @@ public class RecordManager {
     public void init(Application application) {
         if (application != this.context) {
             this.context = application;
-            OLELogManager.init(application, new OLELoggerConfig.Builder()
+            OLELogManager.getInstance().init(application, new OLELoggerConfig.Builder()
                     //是否展示线程信息
                     .isThreadInfo(false)
                     //方法深度 打印多少行
