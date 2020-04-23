@@ -1,12 +1,21 @@
 package com.ole.driver.recorderlib.recorder;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
+import com.ole.driver.recorderlib.R;
 import com.ole.driver.recorderlib.recorder.listener.RecordDataListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordFftDataListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordResultListener;
@@ -45,8 +54,22 @@ public class RecordService extends Service {
 
     private final static String PARAM_PATH = "path";
 
-
     public RecordService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification notification = currentConfig.getNotificationConfig();
+            if (notification != null) {
+                startForeground(1, notification);
+            } else {
+                throw new NullPointerException("notification不能为空!!!");
+            }
+
+        }
+
     }
 
     @Override
@@ -88,25 +111,41 @@ public class RecordService extends Service {
         Intent intent = new Intent(context, RecordService.class);
         intent.putExtra(ACTION_NAME, ACTION_START_RECORD);
         intent.putExtra(PARAM_PATH, getFilePath());
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     public static void stopRecording(Context context) {
         Intent intent = new Intent(context, RecordService.class);
         intent.putExtra(ACTION_NAME, ACTION_STOP_RECORD);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     public static void resumeRecording(Context context) {
         Intent intent = new Intent(context, RecordService.class);
         intent.putExtra(ACTION_NAME, ACTION_RESUME_RECORD);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     public static void pauseRecording(Context context) {
         Intent intent = new Intent(context, RecordService.class);
         intent.putExtra(ACTION_NAME, ACTION_PAUSE_RECORD);
-        context.startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
     }
 
     /**
@@ -148,6 +187,10 @@ public class RecordService extends Service {
 
     public static void changeSource(int source) {
         currentConfig.setSource(source);
+    }
+
+    public static void setNotification(Notification notification) {
+        currentConfig.setNotificationConfig(notification);
     }
 
     /**

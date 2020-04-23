@@ -7,13 +7,15 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.0.7'
+api 'com.ole.travel:recorder:1.0.8'
 ```
 
 - ##### 添加权限
 
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
+//配合Android8.0版本的状态栏提示权限
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
@@ -34,7 +36,11 @@ RecordManager.getInstance().init(this);
 
 - ##### 配置录音参数
 
+  注意：Android8.0版本以上必须添加Notification配置，否则会报空指针！！！
+
 ```java
+//Android 8.0版本以上必须添加Notification配置
+ recordManager.setNotification(yourNotification);
 //设置保存格式 默认为mp3
 recordManager.changeFormat(RecordConfig.RecordFormat.MP3);
 //设置帧率    默认为44100

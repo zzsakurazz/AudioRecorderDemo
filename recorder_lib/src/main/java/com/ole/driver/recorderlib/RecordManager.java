@@ -3,6 +3,7 @@ package com.ole.driver.recorderlib;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.app.Notification;
 
 import com.ole.driver.recorderlib.recorder.RecordConfig;
 import com.ole.driver.recorderlib.recorder.RecordHelper;
@@ -46,7 +47,7 @@ public class RecordManager {
      * @param application Application
      */
     public void init(Application application) {
-        if(application!= this.context){
+        if (application != this.context) {
             this.context = application;
             OLELogManager.init(application, new OLELoggerConfig.Builder()
                     //是否展示线程信息
@@ -58,7 +59,7 @@ public class RecordManager {
                     //tag标识
                     .tag("Audio_Recorder")
                     .build());
-        }else{
+        } else {
             Logger.e("多次初始化");
         }
     }
@@ -148,17 +149,26 @@ public class RecordManager {
     public void changeRecordDir(String recordDir) {
         RecordService.changeRecordDir(recordDir);
     }
+
     /**
      * 修改录音文件存放路径
      */
     public void changeFileName(String fileName) {
         RecordService.changeFileName(fileName);
     }
+
     /**
      * 修改录音文件存放路径
      */
     public void changeSource(int source) {
         RecordService.changeSource(source);
+    }
+
+    /**
+     * 添加系统状态栏设置
+     */
+    public void setNotification(Notification notification) {
+        RecordService.setNotification(notification);
     }
 
     /**

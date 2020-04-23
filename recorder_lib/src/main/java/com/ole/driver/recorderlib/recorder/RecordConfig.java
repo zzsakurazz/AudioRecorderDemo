@@ -1,5 +1,6 @@
 package com.ole.driver.recorderlib.recorder;
 
+import android.app.Notification;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -50,6 +51,10 @@ public class RecordConfig implements Serializable {
     private String recordDir = String.format(Locale.getDefault(),
             "%s/Record/",
             Environment.getExternalStorageDirectory().getAbsolutePath());
+    /**
+     * 通知栏配置
+     */
+    private Notification notificationConfig;
 
     public RecordConfig() {
     }
@@ -191,6 +196,13 @@ public class RecordConfig implements Serializable {
         return this;
     }
 
+    public Notification getNotificationConfig() {
+        return notificationConfig;
+    }
+
+    public void setNotificationConfig(Notification notificationConfig) {
+        this.notificationConfig = notificationConfig;
+    }
 
     @Override
     public String toString() {

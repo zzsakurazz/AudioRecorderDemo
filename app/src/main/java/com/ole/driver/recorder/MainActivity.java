@@ -2,8 +2,13 @@ package com.ole.driver.recorder;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -16,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.ole.driver.recorderlib.RecordManager;
 import com.ole.driver.recorderlib.recorder.RecordConfig;
@@ -50,10 +56,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     String PERMISSION_STORAGE_MSG = "请授予录音权限，不然就别玩了";
     @BindView(R2.id.main_tv_time)
     TextView mainTvTime;
+    /**
+     * 前台服务所需Notifi
+     */
+    private NotificationManager mNotificationManager;
     private int PERMISSION_STORAGE_CODE = 10001;
     private int time = 1;
     private final RecordManager recordManager = RecordManager.getInstance();
-    private String[] PERMS = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
+    private String[] PERMS = {Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -102,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private void initRecord() {
         String recordDir = String.format(Locale.getDefault(), "%s/Record/com.zz.main/",
                 this.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+        //设置通知栏样式
+        recordManager.setNotification(getNotificationBuilder().build());
         recordManager.changeFormat(RecordConfig.RecordFormat.MP3);
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
@@ -192,5 +204,61 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+
+    /**
+     * 前台通知配置
+     *
+     * @return
+     */
+    @NonNull
+    private NotificationCompat.Builder getNotificationBuilder() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("id", "录音软件",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            //是否绕过请勿打扰模式
+            channel.canBypassDnd();
+            //闪光灯
+            channel.enableLights(true);
+            //锁屏显示通知
+            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
+            //闪关灯的灯光颜色
+            channel.setLightColor(Color.RED);
+            //桌面launcher的消息角标
+            channel.canShowBadge();
+            //是否允许震动
+            channel.enableVibration(true);
+            //获取系统通知响铃声音的配置
+            channel.getAudioAttributes();
+            //获取通知取到组
+            channel.getGroup();
+            //设置可绕过  请勿打扰模式
+            channel.setBypassDnd(true);
+            //设置震动模式
+            channel.setVibrationPattern(new long[]{100, 100, 200});
+            //是否会有灯光
+            channel.shouldShowLights();
+            getNotificationManager().createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "id");
+        notification.setContentTitle("title");
+        notification.setContentText("text");
+        notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notification.setWhen(System.currentTimeMillis());
+        notification.setAutoCancel(true);
+        return notification;
+    }
+
+    /**
+     * 获取notifi
+     *
+     * @return
+     */
+    private NotificationManager getNotificationManager() {
+        if (mNotificationManager == null) {
+            mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        }
+        return mNotificationManager;
     }
 }
