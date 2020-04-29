@@ -269,5 +269,9 @@ public class RecordService extends Service {
         return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName, currentConfig.getFormat().getExtension());
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+    }
 }
