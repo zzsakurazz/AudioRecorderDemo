@@ -53,6 +53,7 @@ public class RecordService extends Service {
     private final static int ACTION_PAUSE_RECORD = 4;
 
     private final static String PARAM_PATH = "path";
+    private final static int NOTICE_ID = 123;
 
     public RecordService() {
     }
@@ -63,13 +64,13 @@ public class RecordService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = currentConfig.getNotificationConfig();
             if (notification != null) {
-                startForeground(1, notification);
+                startForeground(NOTICE_ID, notification);
             } else {
                 throw new NullPointerException("notification不能为空!!!");
             }
-
+        } else {
+            startForeground(NOTICE_ID, new Notification());
         }
-
     }
 
     @Override
@@ -80,7 +81,7 @@ public class RecordService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent == null) {
-            return super.onStartCommand(intent, flags, startId);
+            return START_STICKY;
         }
         Bundle bundle = intent.getExtras();
         if (bundle != null && bundle.containsKey(ACTION_NAME)) {
@@ -100,12 +101,16 @@ public class RecordService extends Service {
                 default:
                     break;
             }
-            return START_STICKY;
+            return START_REDELIVER_INTENT;
         }
 
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
 
     public static void startRecording(Context context) {
         Intent intent = new Intent(context, RecordService.class);
