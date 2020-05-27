@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -263,12 +264,12 @@ public class RecordService extends Service {
         String fileDir =
                 currentConfig.getRecordDir();
         if (!FileUtils.createOrExistsDir(fileDir)) {
-            Logger.e("文件夹创建失败：%s", fileDir);
+            Log.e("zz", (String.format("文件夹创建失败：%s", fileDir)));
             return null;
         }
         String fileName = currentConfig.getFileName();
         if (fileName.isEmpty()) {
-            Logger.e("文件创建失败：文件名不合法");
+            Log.e("zz", ("文件创建失败：文件名不合法"));
             return null;
         }
         return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName, currentConfig.getFormat().getExtension());

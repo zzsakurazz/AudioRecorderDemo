@@ -33,7 +33,7 @@ public class RecordConfig implements Serializable {
     /**
      * 音源
      */
-    private int sourceConfig = MediaRecorder.AudioSource.MIC;
+    private int sourceConfig = MediaRecorder.AudioSource.DEFAULT;
 
     /**
      * 采样率
