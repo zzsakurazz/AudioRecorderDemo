@@ -2,12 +2,16 @@
 
 司机端录音组件，通过Android自带的AudioRecord来实现录音，支持保存wav、mp3、pcm格式
 
+### 更新日志
+
+- 1.1.5版本修改了录音结束后返回的接口，目前版本不会返回Bast64，需要用户手动通过返回的文件和提供的工具类自行转换
+
 ### 使用方式
 
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.1.4'
+api 'com.ole.travel:recorder:1.1.5'
 ```
 
 - ##### 添加权限
@@ -76,7 +80,7 @@ recordManager.setRecordStateListener(new RecordStateListener() {
 ```java
    recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
-            public void onResult(File resultFile, String resultBase64) {
+            public void onResult(File resultFile) {
 
             }
         });
@@ -101,6 +105,13 @@ RecordManager.getInstance().stop();
 //获取当前录音状态
 recordManager.getState();
 ```
+- Bast64转换
+
+```java
+//推荐在子线程转换，防止大文件转换耗时
+Bast64Utils.fileToBase64(resultFile)
+```
+
 ### 备注
 
 其他操作详见[demo](https://gitlab.olafuwu.com/ole-terminal/ole-arc/android/common_recorder)

@@ -180,7 +180,7 @@ public class RecordHelper {
                     recordStateListener.onStateChange(RecordState.FINISH);
                 }
                 if (recordResultListener != null) {
-                    recordResultListener.onResult(resultFile, Bast64Utils.fileToBase64(resultFile));
+                    recordResultListener.onResult(resultFile);
                 }
             }
         });

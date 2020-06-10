@@ -29,6 +29,7 @@ import com.ole.driver.recorderlib.recorder.RecordHelper;
 import com.ole.driver.recorderlib.recorder.listener.RecordResultListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordSoundSizeListener;
 import com.ole.driver.recorderlib.recorder.listener.RecordStateListener;
+import com.ole.driver.recorderlib.utils.Bast64Utils;
 import com.ole.driver.recorderlib.utils.FileUtils;
 
 import java.io.File;
@@ -39,6 +40,13 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.internal.observers.BlockingBaseObserver;
+import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -63,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private int PERMISSION_STORAGE_CODE = 10001;
     private int time = 1;
     private final RecordManager recordManager = RecordManager.getInstance();
-    private String[] PERMS = {Manifest.permission.FOREGROUND_SERVICE,Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
+    private String[] PERMS = {Manifest.permission.FOREGROUND_SERVICE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.INTERNET};
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -133,10 +141,25 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
-            public void onResult(File resultFile, String resultBase64) {
+            public void onResult(File resultFile) {
                 Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-            }
+                Observable.create(new ObservableOnSubscribe<String>() {
+                    @Override
+                    public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                        emitter.onNext(Bast64Utils.fileToBase64(resultFile));
+                    }
+                }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new BlockingBaseObserver<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        Log.e("zz", "resultBase64:\n" + s);
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
+            }
         });
         recordManager.setRecordSoundSizeListener(new RecordSoundSizeListener() {
             @Override

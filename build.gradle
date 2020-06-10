@@ -25,7 +25,7 @@ allprojects {
                 password "B0C1F4AE795911E89C2188E9FE6@C0E4"
             }
         }
-
+        maven { url "https://oss.jfrog.org/libs-snapshot" }
     }
 }
 
