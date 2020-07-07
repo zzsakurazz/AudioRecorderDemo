@@ -1,9 +1,10 @@
 ## **common_recorder**
 
-司机端录音组件，通过Android自带的AudioRecord来实现录音，支持保存wav、mp3、pcm格式
+司机端录音组件，通过Android自带的MediaRecorder来实现录音，保存为AMR格式
 
 ### 更新日志
 
+- 1.1.6修改了录音方式，采用MediaRecorder来进行录音，避免了启动service和手动转换格式等消耗资源的问题
 - 1.1.5版本修改了录音结束后返回的接口，目前版本不会返回Bast64，需要用户手动通过返回的文件和提供的工具类自行转换
 
 ### 使用方式
@@ -11,16 +12,13 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.1.5'
+api 'com.ole.travel:recorder:1.1.6'
 ```
 
 - ##### 添加权限
 
 ```xml
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
-//配合Android8.0版本的状态栏提示权限
-<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 ```
 
 - ##### 初始化
@@ -32,30 +30,17 @@ api 'com.ole.travel:recorder:1.1.5'
 RecordManager.getInstance().init(this);
 ```
 
-- ##### 注册service
-
-```xml
-<service android:name="com.ole.driver.recorderlib.recorder.RecordService" />
-```
-
 - ##### 配置录音参数
 
-  注意：Android8.0版本以上必须添加Notification配置，否则会报空指针！！！
 
 ```java
-//Android 8.0版本以上必须添加Notification配置
- recordManager.setNotification(yourNotification);
-//设置保存格式 默认为mp3
-recordManager.changeFormat(RecordConfig.RecordFormat.MP3);
-//设置帧率    默认为44100
-recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
-//设置编码格式 默认为16BIT
-recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
-//设置音源    默认为MIC
+//(可选)设置保存格式 目前仅支持AMR
+recordManager.changeFormat(RecordConfig.RecordFormat.AMR);
+//(可选)设置音源     默认为MIC
 recordManager.changeSource(MediaRecorder.AudioSource.MIC);
-//设置保存路径
+//(必须)设置保存路径
 recordManager.changeRecordDir(recordDir);
-//设置文件名 注意每次录音时请重新设置，避免文件覆盖
+//(必须)设置文件名 注意每次录音时请重新设置，避免文件覆盖
 recordManager.changeFileName(fileName);
 ```
 
@@ -91,10 +76,6 @@ recordManager.setRecordStateListener(new RecordStateListener() {
 ```java
 //开始录音
 RecordManager.getInstance().start();
-//暂停录音
-RecordManager.getInstance().pause();
-//恢复录音
-RecordManager.getInstance().resume();
 //停止录音
 RecordManager.getInstance().stop();
 ```

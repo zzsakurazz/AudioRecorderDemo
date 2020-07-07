@@ -5,10 +5,6 @@ import android.app.Application;
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
 
-import ola.com.travel.log.OLELogManager;
-import ola.com.travel.log.conofig.OLELoggerConfig;
-
-
 /**
  * @author ole on 2018/7/10.
  */
@@ -17,6 +13,7 @@ public class RecordManager {
     private MediaRecorderUtils mediaRecorderUtils;
 
     private RecordManager() {
+        mediaRecorderUtils = new MediaRecorderUtils();
     }
 
     public static RecordManager getInstance() {
@@ -28,25 +25,6 @@ public class RecordManager {
             }
         }
         return instance;
-    }
-
-    /**
-     * 初始化
-     *
-     * @param application Application
-     */
-    public void init(Application application) {
-        mediaRecorderUtils = new MediaRecorderUtils();
-        OLELogManager.getInstance().init(application, new OLELoggerConfig.Builder()
-                //是否展示线程信息
-                .isThreadInfo(false)
-                //方法深度 打印多少行
-                .methodCount(1)
-                //方法偏移量
-                .methodOffset(1)
-                //tag标识
-                .tag("Audio_Recorder")
-                .build());
     }
 
     public void start() {

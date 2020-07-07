@@ -32,12 +32,12 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.internal.observers.BlockingBaseObserver;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.internal.observers.BlockingBaseObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.setRecordStateListener(new RecordStateListener() {
             @Override
             public void onStateChange(RecordState state) {
-                mainTvVolume.setText(String.format("状态：%s", state.name()));
+                mainTvVolume.setText("状态：" + state.name());
             }
 
             @Override
@@ -172,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 break;
             case R.id.main_but_stop:
                 RecordManager.getInstance().stop();
-                mainTvVolume.setText("音量:--");
                 handler.sendEmptyMessage(1);
                 break;
             default:

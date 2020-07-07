@@ -15,10 +15,5 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        /**
-         * 参数1： Application 实例
-         * 参数2： 是否打印日志
-         */
-        RecordManager.getInstance().init(this);
     }
 }

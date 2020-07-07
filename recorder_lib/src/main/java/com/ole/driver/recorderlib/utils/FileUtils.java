@@ -87,11 +87,9 @@ public class FileUtils {
      */
     public static String getFilePath(String fileDir, String fileName, String extension) {
         if (!FileUtils.createOrExistsDir(fileDir)) {
-            Log.e("zz", (String.format("文件夹创建失败：%s", fileDir)));
             return null;
         }
         if (fileName.isEmpty()) {
-            Log.e("zz", ("文件创建失败：文件名不合法"));
             return null;
         }
         return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName,extension);
