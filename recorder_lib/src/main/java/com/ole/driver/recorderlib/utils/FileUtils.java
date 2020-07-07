@@ -1,8 +1,11 @@
 package com.ole.driver.recorderlib.utils;
 
 
+import android.util.Log;
+
 import java.io.File;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author ole on 2018/7/10.
@@ -77,4 +80,21 @@ public class FileUtils {
     public static boolean isFileExists(final File file) {
         return file != null && file.exists();
     }
+
+    /**
+     * 根据当前的时间生成相应的文件名
+     * 实例 record_20160101_13_15_12
+     */
+    public static String getFilePath(String fileDir, String fileName, String extension) {
+        if (!FileUtils.createOrExistsDir(fileDir)) {
+            Log.e("zz", (String.format("文件夹创建失败：%s", fileDir)));
+            return null;
+        }
+        if (fileName.isEmpty()) {
+            Log.e("zz", ("文件创建失败：文件名不合法"));
+            return null;
+        }
+        return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName,extension);
+    }
+
 }

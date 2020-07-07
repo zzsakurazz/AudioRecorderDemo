@@ -2,7 +2,7 @@ package com.ole.driver.recorder;
 
 import android.app.Application;
 
-import com.ole.driver.recorderlib.RecordManager;
+import com.ole.driver.recorderlib.recorder.RecordManager;
 
 /**
  * @author zhangzheng

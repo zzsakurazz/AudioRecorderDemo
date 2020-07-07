@@ -2,13 +2,8 @@ package com.ole.driver.recorder;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.graphics.Color;
-import android.media.AudioFormat;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -21,14 +16,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import com.ole.driver.recorderlib.RecordManager;
-import com.ole.driver.recorderlib.recorder.RecordConfig;
-import com.ole.driver.recorderlib.recorder.RecordHelper;
-import com.ole.driver.recorderlib.recorder.listener.RecordResultListener;
-import com.ole.driver.recorderlib.recorder.listener.RecordSoundSizeListener;
-import com.ole.driver.recorderlib.recorder.listener.RecordStateListener;
+import com.ole.driver.recorderlib.listener.RecordResultListener;
+import com.ole.driver.recorderlib.listener.RecordStateListener;
+import com.ole.driver.recorderlib.recorder.RecordManager;
+import com.ole.driver.recorderlib.recorder.RecordState;
 import com.ole.driver.recorderlib.utils.Bast64Utils;
 import com.ole.driver.recorderlib.utils.FileUtils;
 
@@ -43,7 +35,6 @@ import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.internal.observers.BlockingBaseObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -114,34 +105,30 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
          * 添加退出保存
          */
         RecordManager.getInstance().stop();
+        RecordManager.getInstance().release();
         super.onDestroy();
     }
 
     private void initRecord() {
         String recordDir = String.format(Locale.getDefault(), "%s/Record/com.zz.main/",
                 this.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
-        //设置通知栏样式
-        recordManager.setNotification(getNotificationBuilder().build());
-        recordManager.changeFormat(RecordConfig.RecordFormat.MP3);
-        recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(44100));
-        recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         recordManager.changeRecordDir(recordDir);
-        //MIC:麦克风  DEFAULT:默认音源
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.setRecordStateListener(new RecordStateListener() {
             @Override
-            public void onStateChange(RecordHelper.RecordState state) {
-
+            public void onStateChange(RecordState state) {
+                mainTvVolume.setText(String.format("状态：%s", state.name()));
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(String error, int code) {
 
             }
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
             public void onResult(File resultFile) {
+                Log.e("zz", "录音文件： " + resultFile.getAbsolutePath());
                 Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                 Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
@@ -159,12 +146,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
                     }
                 });
-            }
-        });
-        recordManager.setRecordSoundSizeListener(new RecordSoundSizeListener() {
-            @Override
-            public void onSoundSize(int soundSize) {
-                mainTvVolume.setText("音量:" + soundSize);
             }
         });
     }
@@ -229,59 +210,4 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         }
     }
 
-
-    /**
-     * 前台通知配置
-     *
-     * @return
-     */
-    @NonNull
-    private NotificationCompat.Builder getNotificationBuilder() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("id", "录音软件",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            //是否绕过请勿打扰模式
-            channel.canBypassDnd();
-            //闪光灯
-            channel.enableLights(true);
-            //锁屏显示通知
-            channel.setLockscreenVisibility(Notification.VISIBILITY_SECRET);
-            //闪关灯的灯光颜色
-            channel.setLightColor(Color.RED);
-            //桌面launcher的消息角标
-            channel.canShowBadge();
-            //是否允许震动
-            channel.enableVibration(true);
-            //获取系统通知响铃声音的配置
-            channel.getAudioAttributes();
-            //获取通知取到组
-            channel.getGroup();
-            //设置可绕过  请勿打扰模式
-            channel.setBypassDnd(true);
-            //设置震动模式
-            channel.setVibrationPattern(new long[]{100, 100, 200});
-            //是否会有灯光
-            channel.shouldShowLights();
-            getNotificationManager().createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, "id");
-        notification.setContentTitle("title");
-        notification.setContentText("text");
-        notification.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        notification.setWhen(System.currentTimeMillis());
-        notification.setAutoCancel(true);
-        return notification;
-    }
-
-    /**
-     * 获取notifi
-     *
-     * @return
-     */
-    private NotificationManager getNotificationManager() {
-        if (mNotificationManager == null) {
-            mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        }
-        return mNotificationManager;
-    }
 }

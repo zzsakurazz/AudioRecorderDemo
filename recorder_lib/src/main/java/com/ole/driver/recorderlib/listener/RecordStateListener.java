@@ -1,7 +1,7 @@
-package com.ole.driver.recorderlib.recorder.listener;
+package com.ole.driver.recorderlib.listener;
 
 
-import com.ole.driver.recorderlib.recorder.RecordHelper;
+import com.ole.driver.recorderlib.recorder.RecordState;
 
 /**
  * @author ole on 2018/7/11.
@@ -13,13 +13,14 @@ public interface RecordStateListener {
      *
      * @param state 当前状态
      */
-    void onStateChange(RecordHelper.RecordState state);
+    void onStateChange(RecordState state);
 
     /**
      * 录音错误
      *
      * @param error 错误
+     * @param code 错误码
      */
-    void onError(String error);
+    void onError(String error, int code);
 
 }
