@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author zhangzheng
  * @Date 2020/7/7 10:57 AM
- * @ClassName MediaRecordService
+ * @ClassName MediaRecorderUtils
  * <p>
  * Desc :
  */
@@ -61,7 +61,7 @@ public class MediaRecorderUtils {
         mMediaRecorder.setAudioSource(mCurrentConfig.getSourceConfig());
         // 设置默认音频输出格式
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
-        // 设置默认音频编码方式
+        // 设置设置音频编码器
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
     }
 
@@ -125,14 +125,12 @@ public class MediaRecorderUtils {
             if (mRecordStateListener != null) {
                 mRecordStateListener.onStateChange(state);
             }
+            mMediaRecorder.stop();
             if (mRecordResultListener != null) {
                 mRecordResultListener.onResult(mFile);
             }
-            mMediaRecorder.stop();
-            mMediaRecorder.release();
             state = RecordState.IDLE;
-            mMediaRecorder = null;
-
+            release();
         } else {
             if (mRecordStateListener != null) {
                 mRecordStateListener.onError((String.format("状态异常当前状态:%s", state.name())), ErrorCode.STATE_ERROR);
@@ -145,7 +143,9 @@ public class MediaRecorderUtils {
      */
     public void release() {
         if (mMediaRecorder != null) {
-            mMediaRecorder.stop();
+            if(state == RecordState.RECORDING){
+                mMediaRecorder.stop();
+            }
             mMediaRecorder.release();
         }
         mFile = null;
