@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
+import com.ole.driver.recorderlib.recorder.RecordFormat;
 import com.ole.driver.recorderlib.recorder.RecordManager;
 import com.ole.driver.recorderlib.recorder.RecordState;
 import com.ole.driver.recorderlib.utils.Bast64Utils;
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 this.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
         recordManager.changeRecordDir(recordDir);
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
+        recordManager.changeFormat(RecordFormat.MP3);
         recordManager.setRecordStateListener(new RecordStateListener() {
             @Override
             public void onStateChange(RecordState state) {

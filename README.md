@@ -1,8 +1,10 @@
 ## **common_recorder**
 
-司机端录音组件，通过Android自带的MediaRecorder来实现录音，保存为AMR格式
+司机端录音组件，通过Android自带的MediaRecorder来实现录音，保存为AMR格式和MP3格式
 
 ### 更新日志
+
+- 1.1.9添加了mp3的保存格式
 
 - 1.1.6修改了录音方式，采用MediaRecorder来进行录音，避免了启动service和手动转换格式等消耗资源的问题。删除了暂停与恢复功能，删除了音量回调
 - 1.1.5版本修改了录音结束后返回的接口，目前版本不会返回Bast64，需要用户手动通过返回的文件和提供的工具类自行转换
@@ -12,7 +14,7 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.1.6'
+api 'com.ole.travel:recorder:1.1.9'
 ```
 
 - ##### 添加权限
@@ -21,20 +23,17 @@ api 'com.ole.travel:recorder:1.1.6'
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
 ```
 
-- ##### 初始化
+- ##### ~~初始化~~
 
 ```java
-/**
- * 参数1： Application 实例
- */
-RecordManager.getInstance().init(this);
+
 ```
 
 - ##### 配置录音参数
 
 
 ```java
-//(可选)设置保存格式 目前仅支持AMR
+//(可选)设置保存格式 目前支持MP3&AMR 默认MP3
 recordManager.changeFormat(RecordConfig.RecordFormat.AMR);
 //(可选)设置音源     默认为MIC
 recordManager.changeSource(MediaRecorder.AudioSource.MIC);
@@ -49,12 +48,12 @@ recordManager.changeFileName(fileName);
 ```java
 recordManager.setRecordStateListener(new RecordStateListener() {
     @Override
-    public void onStateChange(RecordHelper.RecordState state) {
+    public void onStateChange(RecordState state) {
 
     }
 
     @Override
-    public void onError(String error) {
+    public void onError(String error, int code) {
 
     }
 });

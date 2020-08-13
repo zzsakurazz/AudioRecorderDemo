@@ -7,12 +7,17 @@ package com.ole.driver.recorderlib.recorder;
  * <p>
  * Desc :
  */
-enum RecordFormat {
+public enum RecordFormat {
 
     /**
      * mar格式
      */
-    AMR(".amr");
+    AMR(".amr"),
+
+    /**
+     * mar格式
+     */
+    MP3(".mp3");
 
     private String extension;
 

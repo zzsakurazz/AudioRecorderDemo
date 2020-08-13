@@ -59,10 +59,17 @@ public class MediaRecorderUtils {
         state = RecordState.IDLE;
         // 设置音频来源MIC
         mMediaRecorder.setAudioSource(mCurrentConfig.getSourceConfig());
-        // 设置默认音频输出格式
-        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
-        // 设置设置音频编码器
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+        if (mCurrentConfig.getFormat() == RecordFormat.MP3) {
+            // 设置默认音频输出格式
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            // 设置设置音频编码器
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        } else if (mCurrentConfig.getFormat() == RecordFormat.AMR) {
+            // 设置默认音频输出格式
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
+            // 设置设置音频编码器
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
+        }
     }
 
 
@@ -143,7 +150,7 @@ public class MediaRecorderUtils {
      */
     public void release() {
         if (mMediaRecorder != null) {
-            if(state == RecordState.RECORDING){
+            if (state == RecordState.RECORDING) {
                 mMediaRecorder.stop();
             }
             mMediaRecorder.release();
@@ -180,6 +187,10 @@ public class MediaRecorderUtils {
 
     public void changeFileName(String fileName) {
         mCurrentConfig.setFileName(fileName);
+    }
+
+    public void changeFormat(RecordFormat format) {
+        mCurrentConfig.setFormat(format);
     }
 
     public void changeSource(int source) {

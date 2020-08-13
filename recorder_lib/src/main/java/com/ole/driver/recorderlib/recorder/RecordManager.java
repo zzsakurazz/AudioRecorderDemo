@@ -94,6 +94,15 @@ public class RecordManager {
     }
 
     /**
+     * 修改录音文件名
+     */
+    public void changeFormat(RecordFormat format) {
+        if (mediaRecorderUtils != null) {
+            mediaRecorderUtils.changeFormat(format);
+        }
+    }
+
+    /**
      * 修改音源
      */
     public void changeSource(int source) {

@@ -15,9 +15,9 @@ import java.util.Locale;
  */
 public class RecordConfig implements Serializable {
     /**
-     * 录音格式 默认MP3格式
+     * 录音格式
      */
-    private RecordFormat format = RecordFormat.AMR;
+    private RecordFormat format = RecordFormat.MP3;
 
     /**
      * 音源
@@ -36,10 +36,6 @@ public class RecordConfig implements Serializable {
     private String recordDir = String.format(Locale.getDefault(),
             "%s/Record/",
             Environment.getExternalStorageDirectory().getAbsolutePath());
-    /**
-     * 通知栏配置
-     */
-    private Notification notificationConfig;
 
     public RecordConfig() {
     }
@@ -86,13 +82,5 @@ public class RecordConfig implements Serializable {
         return this;
     }
 
-
-    public Notification getNotificationConfig() {
-        return notificationConfig;
-    }
-
-    public void setNotificationConfig(Notification notificationConfig) {
-        this.notificationConfig = notificationConfig;
-    }
 
 }
