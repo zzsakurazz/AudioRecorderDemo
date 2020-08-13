@@ -1,11 +1,14 @@
 package com.ole.driver.recorderlib.recorder;
 
 import android.app.Notification;
+import android.content.Context;
 import android.media.AudioFormat;
 import android.media.MediaRecorder;
 import android.os.Environment;
 
+import com.ole.driver.recorderlib.R;
 import com.ole.driver.recorderlib.utils.FileUtils;
+import com.ole.driver.recorderlib.utils.NotifyUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -196,7 +199,10 @@ public class RecordConfig implements Serializable {
         return this;
     }
 
-    public Notification getNotificationConfig() {
+    public Notification getNotificationConfig(Context context) {
+        if (notificationConfig == null) {
+            notificationConfig = NotifyUtils.getNotification(context, R.mipmap.ic_launcher, "欧了司机", "为保障司乘安全，全程录音已开启");
+        }
         return notificationConfig;
     }
 

@@ -63,7 +63,7 @@ public class RecordService extends Service {
     public void onCreate() {
         super.onCreate();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = currentConfig.getNotificationConfig();
+            Notification notification = currentConfig.getNotificationConfig(this);
             if (notification != null) {
                 startForeground(NOTICE_ID, notification);
             } else {
