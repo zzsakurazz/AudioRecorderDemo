@@ -92,6 +92,14 @@ recordManager.getState();
 Bast64Utils.fileToBase64(resultFile)
 ```
 
+- 错误码
+
+  | 错误码 | 含义                                   |
+  | :----: | :------------------------------------- |
+  |  1001  | 文件创建失败                           |
+  |  1002  | 录音失败，常见于系统报错               |
+  |  1003  | 录音状态异常，比如录音中又再次尝试录音 |
+
 ### 备注
 
 其他操作详见[demo](https://gitlab.olafuwu.com/ole-terminal/ole-arc/android/common_recorder)
