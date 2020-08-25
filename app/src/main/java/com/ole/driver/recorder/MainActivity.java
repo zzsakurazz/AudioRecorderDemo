@@ -124,12 +124,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
             @Override
             public void onError(String error, int code) {
-
+                Log.e("zz","录音失败 msg:" + error + ",code:" + code);
             }
         });
         recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
             public void onResult(File resultFile) {
+                RecordManager.getInstance().start();
+                handler.sendEmptyMessage(0);
                 Log.e("zz", "录音文件： " + resultFile.getAbsolutePath());
                 Toast.makeText(MainActivity.this, "录音文件： " + resultFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                 Observable.create(new ObservableOnSubscribe<String>() {

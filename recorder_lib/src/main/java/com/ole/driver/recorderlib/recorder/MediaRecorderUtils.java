@@ -5,6 +5,7 @@ import android.media.MediaRecorder;
 
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
+import com.ole.driver.recorderlib.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +97,13 @@ public class MediaRecorderUtils {
             return;
         }
         try {
-            mFile = new File(mCurrentConfig.getRecordDir(), mCurrentConfig.getFileName() + mCurrentConfig.getFormat().getExtension());
+            String mFilePath = FileUtils.getFilePath(mCurrentConfig.getRecordDir(), mCurrentConfig.getFileName(), mCurrentConfig.getFormat().getExtension());
+            if (mFilePath == null) {
+                if (mRecordStateListener != null) {
+                    mRecordStateListener.onError("文件创建失败，目的地址：" + mCurrentConfig.getRecordDir() + mCurrentConfig.getFileName() + mCurrentConfig.getFormat().getExtension(), ErrorCode.RECORD_ERROR);
+                }
+            }
+            mFile = new File(mFilePath);
             if (!mFile.exists()) {
                 mFile.createNewFile();
             }

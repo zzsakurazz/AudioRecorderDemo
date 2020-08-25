@@ -1,8 +1,4 @@
 package com.ole.driver.recorderlib.utils;
-
-
-import android.util.Log;
-
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
@@ -92,7 +88,6 @@ public class FileUtils {
         if (fileName.isEmpty()) {
             return null;
         }
-        return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName,extension);
+        return String.format(Locale.getDefault(), "%s%s%s", fileDir, fileName, extension);
     }
-
 }
