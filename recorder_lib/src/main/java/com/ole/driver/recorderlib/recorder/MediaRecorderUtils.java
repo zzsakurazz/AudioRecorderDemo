@@ -139,7 +139,18 @@ public class MediaRecorderUtils {
             if (mRecordStateListener != null) {
                 mRecordStateListener.onStateChange(state);
             }
-            mMediaRecorder.stop();
+            mMediaRecorder.setOnErrorListener(null);
+            mMediaRecorder.setOnInfoListener(null);
+            mMediaRecorder.setPreviewDisplay(null);
+            try {
+                mMediaRecorder.stop();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (mRecordResultListener != null) {
                 mRecordResultListener.onResult(mFile);
             }
