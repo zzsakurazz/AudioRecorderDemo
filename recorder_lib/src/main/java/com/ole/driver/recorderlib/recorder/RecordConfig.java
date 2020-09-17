@@ -24,6 +24,30 @@ public class RecordConfig implements Serializable {
      */
     private int sourceConfig = MediaRecorder.AudioSource.MIC;
 
+    /**
+     * 最大文件大小 单位字节
+     */
+    private long maxFileSize = 0L;
+    /**
+     * 最长文件时间 单位毫秒
+     */
+    private int maxRecordDuration = 0;
+
+    public long getMaxFileSize() {
+        return maxFileSize;
+    }
+
+    public void setMaxFileSize(long maxFileSize) {
+        this.maxFileSize = maxFileSize;
+    }
+
+    public int getMaxRecordDuration() {
+        return maxRecordDuration;
+    }
+
+    public void setMaxRecordDuration(int maxRecordDuration) {
+        this.maxRecordDuration = maxRecordDuration;
+    }
 
     /**
      * 文件名
@@ -43,7 +67,6 @@ public class RecordConfig implements Serializable {
     public RecordConfig(RecordFormat format) {
         this.format = format;
     }
-
 
 
     public String getRecordDir() {

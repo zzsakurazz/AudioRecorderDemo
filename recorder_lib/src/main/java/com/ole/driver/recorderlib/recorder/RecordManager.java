@@ -1,13 +1,11 @@
 package com.ole.driver.recorderlib.recorder;
 
-import android.app.Application;
 
+import com.ole.driver.recorderlib.listener.RecordInfoListener;
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
 
-/**
- * @author ole on 2018/7/10.
- */
+
 public class RecordManager {
     private volatile static RecordManager instance;
     private MediaRecorderUtils mediaRecorderUtils;
@@ -52,6 +50,15 @@ public class RecordManager {
     public void setRecordStateListener(RecordStateListener listener) {
         if (mediaRecorderUtils != null) {
             mediaRecorderUtils.setRecordStateListener(listener);
+        }
+    }
+
+    /**
+     * 录音状态监听回调
+     */
+    public void setRecordInfoListener(RecordInfoListener listener) {
+        if (mediaRecorderUtils != null) {
+            mediaRecorderUtils.setRecordInfoListener(listener);
         }
     }
 
@@ -108,6 +115,24 @@ public class RecordManager {
     public void changeSource(int source) {
         if (mediaRecorderUtils != null) {
             mediaRecorderUtils.changeSource(source);
+        }
+    }
+
+    /**
+     * 修改文件最大大小
+     */
+    public void changeMaxFIleSize(long maxSize) {
+        if (mediaRecorderUtils != null) {
+            mediaRecorderUtils.changeFileSize(maxSize);
+        }
+    }
+
+    /**
+     * 修改文件最大时间长度
+     */
+    public void changeMaxRecordTime(int maxDuration) {
+        if (mediaRecorderUtils != null) {
+            mediaRecorderUtils.changeRecordTime(maxDuration);
         }
     }
 

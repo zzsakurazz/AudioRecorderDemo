@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ole.driver.recorderlib.listener.RecordInfoListener;
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
 import com.ole.driver.recorderlib.recorder.RecordFormat;
@@ -116,6 +117,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.changeRecordDir(recordDir);
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.changeFormat(RecordFormat.MP3);
+        recordManager.changeMaxFIleSize(1000 * 1000 * 50);
+        recordManager.changeMaxRecordTime(1000 * 60 * 10);
+        recordManager.setRecordInfoListener(new RecordInfoListener() {
+            @Override
+            public void onInfo(int what) {
+                RecordManager.getInstance().stop();
+                handler.sendEmptyMessage(1);
+            }
+        });
         recordManager.setRecordStateListener(new RecordStateListener() {
             @Override
             public void onStateChange(RecordState state) {
@@ -124,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
 
             @Override
             public void onError(String error, int code) {
-                Log.e("zz","录音失败 msg:" + error + ",code:" + code);
+                Log.e("zz", "录音失败 msg:" + error + ",code:" + code);
             }
         });
         recordManager.setRecordResultListener(new RecordResultListener() {

@@ -1,14 +1,17 @@
 package com.ole.driver.recorderlib.recorder;
 
 import android.media.MediaRecorder;
+import android.util.Log;
 
 
+import com.ole.driver.recorderlib.listener.RecordInfoListener;
 import com.ole.driver.recorderlib.listener.RecordResultListener;
 import com.ole.driver.recorderlib.listener.RecordStateListener;
 import com.ole.driver.recorderlib.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+
 
 /**
  * @author zhangzheng
@@ -48,6 +51,10 @@ public class MediaRecorderUtils {
      * 录音结果回调
      */
     private RecordResultListener mRecordResultListener;
+    /**
+     * 录音结果回调
+     */
+    private RecordInfoListener mRecordInfoListener;
 
     public MediaRecorderUtils() {
         mCurrentConfig = new RecordConfig();
@@ -60,6 +67,12 @@ public class MediaRecorderUtils {
         state = RecordState.IDLE;
         // 设置音频来源MIC
         mMediaRecorder.setAudioSource(mCurrentConfig.getSourceConfig());
+        if (mCurrentConfig.getMaxFileSize() > 0) {
+            mMediaRecorder.setMaxFileSize(mCurrentConfig.getMaxFileSize());
+        }
+        if (mCurrentConfig.getMaxRecordDuration() > 0) {
+            mMediaRecorder.setMaxDuration(mCurrentConfig.getMaxRecordDuration());
+        }
         if (mCurrentConfig.getFormat() == RecordFormat.MP3) {
             // 设置默认音频输出格式
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
@@ -111,6 +124,28 @@ public class MediaRecorderUtils {
             //指定音频输出文件路径
             mMediaRecorder.setOutputFile(mFile.getAbsolutePath());
             mMediaRecorder.prepare();
+            mMediaRecorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
+                @Override
+                public void onInfo(MediaRecorder mr, int what, int extra) {
+                    if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED) {
+                        //到达最大文件大小
+                        Log.e("zz", "文件大小到啦~~");
+                        if (mRecordInfoListener != null) {
+                            mRecordInfoListener.onInfo(what);
+                        } else {
+                            stop();
+                        }
+                    } else if (what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED) {
+                        //到达最大时间限制
+                        Log.e("zz", "时间长度到啦~~");
+                        if (mRecordInfoListener != null) {
+                            mRecordInfoListener.onInfo(what);
+                        } else {
+                            stop();
+                        }
+                    }
+                }
+            });
             mMediaRecorder.start();  //开始录制
             state = RecordState.RECORDING;
             //开始录制
@@ -186,6 +221,10 @@ public class MediaRecorderUtils {
         this.mRecordResultListener = mRecordResultListener;
     }
 
+    public void setRecordInfoListener(RecordInfoListener mRecordInfoListener) {
+        this.mRecordInfoListener = mRecordInfoListener;
+    }
+
     public boolean changeRecordConfig(RecordConfig recordConfig) {
         if (state == RecordState.IDLE) {
             mCurrentConfig = recordConfig;
@@ -213,5 +252,13 @@ public class MediaRecorderUtils {
 
     public void changeSource(int source) {
         mCurrentConfig.setSource(source);
+    }
+
+    public void changeFileSize(long maxSize) {
+        mCurrentConfig.setMaxFileSize(maxSize);
+    }
+
+    public void changeRecordTime(int maxDuration) {
+        mCurrentConfig.setMaxRecordDuration(maxDuration);
     }
 }
