@@ -117,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         recordManager.changeRecordDir(recordDir);
         recordManager.changeSource(MediaRecorder.AudioSource.MIC);
         recordManager.changeFormat(RecordFormat.MP3);
+        //(可选)设置文件最大大小 单位:字节
         recordManager.changeMaxFIleSize(1000 * 1000 * 50);
+        //(可选)设置文件最大时间长度 单位:毫秒
         recordManager.changeMaxRecordTime(1000 * 60 * 10);
         recordManager.setRecordInfoListener(new RecordInfoListener() {
             @Override

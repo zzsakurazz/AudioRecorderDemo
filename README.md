@@ -4,8 +4,8 @@
 
 ### 更新日志
 
+- 1.2.2添加文件最大限制和录音时间限制
 - 1.1.9添加了mp3的保存格式
-
 - 1.1.6修改了录音方式，采用MediaRecorder来进行录音，避免了启动service和手动转换格式等消耗资源的问题。删除了暂停与恢复功能，删除了音量回调
 - 1.1.5版本修改了录音结束后返回的接口，目前版本不会返回Bast64，需要用户手动通过返回的文件和提供的工具类自行转换
 
@@ -14,7 +14,7 @@
 - ##### 添加依赖
 
 ```groovy
-api 'com.ole.travel:recorder:1.1.9'
+api 'com.ole.travel:recorder:1.2.2'
 ```
 
 - ##### 添加权限
@@ -41,6 +41,10 @@ recordManager.changeSource(MediaRecorder.AudioSource.MIC);
 recordManager.changeRecordDir(recordDir);
 //(必须)设置文件名 注意每次录音时请重新设置，避免文件覆盖
 recordManager.changeFileName(fileName);
+//(可选)设置文件最大大小 单位:字节
+recordManager.changeMaxFIleSize(1000 * 1000 * 50);
+//(可选)设置文件最大时间长度 单位:毫秒
+recordManager.changeMaxRecordTime(1000 * 60 * 10);
 ```
 
 - ##### 录音状态监听
@@ -62,13 +66,25 @@ recordManager.setRecordStateListener(new RecordStateListener() {
 - ##### 录音结果监听
 
 ```java
-   recordManager.setRecordResultListener(new RecordResultListener() {
-            @Override
-            public void onResult(File resultFile) {
+recordManager.setRecordResultListener(new RecordResultListener() {
+    @Override
+           public void onResult(File resultFile) {
 
-            }
-        });
+    }
+});
 ```
+
+- 录音限制监听
+
+  ```java
+  recordManager.setRecordInfoListener(new RecordInfoListener() {
+      @Override
+      public void onInfo(int what) {
+          //MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED 文件超过了字节限制
+          //MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED 时间超过了最大限制
+      }
+  });
+  ```
 
 - ##### 录音操作
 
