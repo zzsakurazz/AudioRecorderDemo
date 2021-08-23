@@ -76,12 +76,12 @@ public class MediaRecorderUtils {
         if (mCurrentConfig.getFormat() == RecordFormat.MP3) {
             // 设置默认音频输出格式
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            // 设置设置音频编码器
+            // 设置音频编码器
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         } else if (mCurrentConfig.getFormat() == RecordFormat.AMR) {
             // 设置默认音频输出格式
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_WB);
-            // 设置设置音频编码器
+            // 设置音频编码器
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
         }
     }
