@@ -2,7 +2,7 @@
 
 ### 说明
 
-~~司机端录音组件，~~通过Android自带的MediaRecorder来实现录音，保存为AMR格式和MP3格式
+通过Android自带的MediaRecorder来实现录音，保存为AMR格式和MP3格式
 
 ### 更新日志
 
