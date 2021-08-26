@@ -1,6 +1,8 @@
 ## **common_recorder**
 
-司机端录音组件，通过Android自带的MediaRecorder来实现录音，保存为AMR格式和MP3格式
+### 说明
+
+~~司机端录音组件，~~通过Android自带的MediaRecorder来实现录音，保存为AMR格式和MP3格式
 
 ### 更新日志
 
@@ -11,11 +13,7 @@
 
 ### 使用方式
 
-- ##### 添加依赖
-
-```groovy
-api 'com.ole.travel:recorder:1.2.2'
-```
+- ##### ~~添加依赖~~
 
 - ##### 添加权限
 
@@ -24,10 +22,6 @@ api 'com.ole.travel:recorder:1.2.2'
 ```
 
 - ##### ~~初始化~~
-
-```java
-
-```
 
 - ##### 配置录音参数
 
@@ -74,17 +68,17 @@ recordManager.setRecordResultListener(new RecordResultListener() {
 });
 ```
 
-- 录音限制监听
+- ##### 录音限制监听
 
-  ```java
-  recordManager.setRecordInfoListener(new RecordInfoListener() {
-      @Override
-      public void onInfo(int what) {
-          //MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED 文件超过了字节限制
-          //MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED 时间超过了最大限制
-      }
-  });
-  ```
+```java
+recordManager.setRecordInfoListener(new RecordInfoListener() {
+    @Override
+    public void onInfo(int what) {
+        //MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED 文件超过了字节限制
+        //MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED 时间超过了最大限制
+    }
+});
+```
 
 - ##### 录音操作
 
@@ -101,7 +95,7 @@ RecordManager.getInstance().stop();
 //获取当前录音状态
 recordManager.getState();
 ```
-- Bast64转换
+- ##### Bast64转换
 
 ```java
 //推荐在子线程转换，防止大文件转换耗时
@@ -118,4 +112,4 @@ Bast64Utils.fileToBase64(resultFile)
 
 ### 备注
 
-其他操作详见[demo](https://gitlab.olafuwu.com/ole-terminal/ole-arc/android/common_recorder)
+无
